@@ -1,0 +1,21 @@
+{
+  "name": "dublinrentalstats_website",
+  "version": "0.1.0",
+  "author": "Robin Jacobs",
+  "license": "GPLv3",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "highcharts": "^6.0.7",
+    "highcharts-more": "^0.1.7",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-highcharts": "^16.0.2",
+    "react-scripts": "1.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

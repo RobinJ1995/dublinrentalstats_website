@@ -1,5 +1,18 @@
 import React, { Component } from 'react';
 
+const formatNumber = number => parseFloat(number).toFixed(2);
+const renderPriceCells = data => ([
+	<td>
+		€{formatNumber(data.lowest)}<br />
+		€{formatNumber(data.highest)}
+	</td>,
+	<td>
+		{data.median && `€${formatNumber(data.median)}`}
+		{data.median && data.average && <br />}
+		{data.average && `€${formatNumber(data.average)}`}
+	</td>
+]);
+
 class StatsTable extends Component {
 	render() {
 		const {
@@ -24,9 +37,14 @@ class StatsTable extends Component {
 						<th colspan="2">County Dublin</th>
 					</tr>
 					<tr>
-						{new Array(8).fill('').map((x, i) => (
-							<th>{i % 2 ? 'Highest' : 'Lowest'}</th>
-						))}
+						<th>Lowest/<br />Highest</th>
+						<th>Median/<br />Average</th>
+						<th>Lowest/<br />Highest</th>
+						<th>Median/<br />Average</th>
+						<th>Lowest/<br />Highest</th>
+						<th>Median/<br />Average</th>
+						<th>Lowest/<br />Highest</th>
+						<th>Median/<br />Average</th>
 					</tr>
 				</thead>
 				<tbody style={{
@@ -36,14 +54,10 @@ class StatsTable extends Component {
 					{Object.keys(data).map(date => (
 						<tr>
 							<th>{new Date(date).toDateString()}</th>
-							<td>€{data[date].rent.city.lowest}</td>
-							<td>€{data[date].rent.city.highest}</td>
-							<td>€{data[date].rent.county.lowest}</td>
-							<td>€{data[date].rent.county.highest}</td>
-							<td>€{data[date].sharing.city.lowest}</td>
-							<td>€{data[date].sharing.city.highest}</td>
-							<td>€{data[date].sharing.county.lowest}</td>
-							<td>€{data[date].sharing.county.highest}</td>
+							{renderPriceCells(data[date].rent.city)}
+							{renderPriceCells(data[date].rent.county)}
+							{renderPriceCells(data[date].sharing.city)}
+							{renderPriceCells(data[date].sharing.county)}
 						</tr>
 					))}
 				</tbody>

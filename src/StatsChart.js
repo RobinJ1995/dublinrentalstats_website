@@ -28,32 +28,36 @@ const getSeries = (title, data, select, colours) => [
 		name: title,
 		type: 'arearange',
 		data: Object.keys(data).map(date => ([new Date(date).getTime(), parseFloat(select(data[date]).lowest), parseFloat(select(data[date]).highest)])),
+		...getColourScheme(select(colours)).range,
 		lineWidth: 0,
 		marker: {
-			enabled: false
+			enabled: false,
 		},
 		zIndex: 0,
-		...getColourScheme(select(colours)).range,
 	}, {
 		name: `${title} (median)`,
 		linkedTo: ':previous',
 		data: Object.keys(data).map(date => ([new Date(date).getTime(), parseFloat(select(data[date]).median)])),
+		...getColourScheme(select(colours)).median,
 		lineWidth: 3,
 		marker: {
 			lineWidth: 2,
+			symbol: 'circle',
+			...getColourScheme(select(colours)).median.marker,
 		},
 		zIndex: 2,
-		...getColourScheme(select(colours)).median,
 	}, {
 		name: `${title} (average)`,
 		linkedTo: ':previous',
 		data: Object.keys(data).map(date => ([new Date(date).getTime(), parseFloat(select(data[date]).average)])),
+		...getColourScheme(select(colours)).average,
 		lineWidth: 2,
 		marker: {
 			lineWidth: 1,
+			symbol: 'diamond',
+			...getColourScheme(select(colours)).average.marker,
 		},
 		zIndex: 1,
-		...getColourScheme(select(colours)).average,
 	},
 	
 	

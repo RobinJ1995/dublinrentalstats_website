@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import Spinner from 'react-md-spinner';
+import Axios from 'axios';
 import StatsTable from './StatsTable';
 import StatsChart from './StatsChart';
-import Axios from 'axios';
+import COLOURS from './colours';
 
 class Stats extends Component {
 	constructor(props) {
@@ -45,7 +47,18 @@ class Stats extends Component {
 		} = this.state;
 		
 		if (loading) {
-			return 'Loading...';
+			const minDist = Math.min(window.innerWidth, window.innerHeight);
+			
+			return <Spinner
+				size={minDist / 5}
+				color1={COLOURS.rent.city}
+				color2={COLOURS.rent.county}
+				color3={COLOURS.sharing.city}
+				color4={COLOURS.sharing.county}
+				style={{
+					margin: minDist / 10,
+				}}
+			/>;
 		}
 		
 		if (error) {
@@ -55,9 +68,11 @@ class Stats extends Component {
 		return ([
 			<StatsTable
 				data={data}
+				colours={COLOURS}
 			/>,
 			<StatsChart
 				data={data}
+				colours={COLOURS}
 			/>,
 		]);
 	}

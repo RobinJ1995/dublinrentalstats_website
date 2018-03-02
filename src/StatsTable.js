@@ -11,6 +11,7 @@ const renderPriceCells = (data, colour, tiny = false) => ([
 			backgroundColor: setColourOpacity(colour, 0.1),
 			...(tiny && { fontSize: '0.8em' })
 		}}
+		title={data.prices && `Information based on ${data.prices.length} property listings`}
 	>
 		€{formatNumber(data.lowest)}<br />
 		€{formatNumber(data.highest)}
@@ -20,6 +21,7 @@ const renderPriceCells = (data, colour, tiny = false) => ([
 			backgroundColor: setColourOpacity(colour, 0.1),
 			...(tiny && { fontSize: '0.8em' })
 		}}
+		title={data.prices && `Information based on ${data.prices.length} property listings`}
 	>
 		{data.median && `€${formatNumber(data.median)}`}
 		{data.median && data.average && <br />}
@@ -65,7 +67,7 @@ const renderLarge = (data, colours) => (
 		}}>
 			{Object.keys(data).map(date => (
 				<tr>
-					<th>{formatDate(new Date(date))}</th>
+					<th title={new Date(date).toDateString()}>{formatDate(new Date(date))}</th>
 					{renderPriceCells(data[date].rent.city, colours.rent.city)}
 					{renderPriceCells(data[date].rent.county, colours.rent.county)}
 					{renderPriceCells(data[date].sharing.city, colours.sharing.city)}

@@ -129,6 +129,14 @@ const getConfig = (data, colours) => ({
 });
 
 class StatsChart extends Component {
+	shouldComponentUpdate(nextProps) {		
+		if (JSON.stringify(this.props.data) === JSON.stringify(nextProps.data) && JSON.stringify(this.props.colours) === JSON.stringify(nextProps.colours)) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	render() {
 		const {
 			data,

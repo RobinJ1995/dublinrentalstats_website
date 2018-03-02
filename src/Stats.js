@@ -12,31 +12,75 @@ class Stats extends Component {
 		this.state = {
 			loading: false,
 			error: false,
-			data: {},
+			data: null,
+			cached: null,
 		};
 	}
 	
 	componentWillMount() {
-		const {
-			source,
-		} = this.props;
-		
 		this.setState({
 			loading: true,
 		});
 		
-		return Axios.get(source).then(
-			({ data }) => this.setState({
-				loading: false,
-				error: false,
-				data,
-			})
-		).catch(
-			error => this.setState({
-				error,
-				loading: false,
-			})
+		this.fetchCachedData();
+		
+		return this.fetchData().catch(
+			error => {
+				if (this.state.data && this.state.cached) {
+					return console.log('Fetching data failed... but cached data is available.');
+				}
+				
+				return this.setState({
+					error,
+					loading: false,
+				})
+			}
 		);
+	}
+	
+	fetchCachedData() {
+		const cachedJson = window.localStorage.getItem('stats.json');
+		
+		try {
+			const cachedData = JSON.parse(cachedJson);
+			
+			if (cachedData) {
+				return this.setState({
+					loading: false,
+					error: false,
+					data: cachedData,
+					cached: true,
+				});
+			}
+		} catch (ex) {
+			console.error(`Tried to use cached data, but it didn't work: ${ex}`);
+		}
+	}
+	
+	fetchData() {
+		const {
+			source,
+		} = this.props;
+		
+		return Axios.get(source).then(
+			({ data }) => this.onDataLoaded(data)
+		);
+	}
+	
+	onDataLoaded(data) {
+		try {
+			window.localStorage.setItem('stats.json', JSON.stringify(data));
+		} catch (ex) {
+			// I don't care a whole lot if this fails.
+			console.error(ex);
+		}
+	
+		return this.setState({
+			loading: false,
+			error: false,
+			data,
+			cached: false,
+		});
 	}
 	
 	render() {

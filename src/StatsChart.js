@@ -59,9 +59,14 @@ const getSeries = (title, data, select, colours) => [
 		},
 		zIndex: 1,
 	},
-	
-	
 ];
+const getHighestMedianOrAverage = data => Object.values(data).map(
+		rentOrSharing => Object.values(rentOrSharing).map(
+			cityOrCounty => Object.values(cityOrCounty).map(
+				prices => Math.max(prices.median || 0, prices.average || 0)
+			).reduce((max, cur) => Math.max(max, cur))
+		).reduce((max, cur) => Math.max(max, cur))
+	).reduce((max, cur) => Math.max(max, cur));
 const getConfig = (data, colours) => ({
 	chart: {
 	},
@@ -88,7 +93,7 @@ const getConfig = (data, colours) => ({
 			text: 'Prices (€/month)'
 		},
 		min: 0,
-		max: 5000,
+		max: Math.ceil(getHighestMedianOrAverage(data) / 1000) * 1000,
 	},
 	
 	legend: {

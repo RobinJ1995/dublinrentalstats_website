@@ -40,21 +40,16 @@ class Stats extends Component {
 	
 	fetchCachedData() {
 		const cachedJson = window.localStorage.getItem('stats.json');
-		
-		try {
-			const cachedData = JSON.parse(cachedJson);
-			
+		new Promise(resolve => resolve(JSON.parse(cachedJson))).then(cachedData => {
 			if (cachedData) {
-				return this.setState({
+				this.setState({
 					loading: false,
 					error: false,
 					data: cachedData,
 					cached: true,
 				});
 			}
-		} catch (ex) {
-			console.error(`Tried to use cached data, but it didn't work: ${ex}`);
-		}
+		}).catch(ex => console.error(`Tried to use cached data, but it didn't work: ${ex}`));
 	}
 	
 	fetchData() {
@@ -68,19 +63,15 @@ class Stats extends Component {
 	}
 	
 	onDataLoaded(data) {
-		try {
-			window.localStorage.setItem('stats.json', JSON.stringify(data));
-		} catch (ex) {
-			// I don't care a whole lot if this fails.
-			console.error(ex);
-		}
-	
-		return this.setState({
-			loading: false,
-			error: false,
-			data,
-			cached: false,
-		});
+		new Promise(resolve => resolve(JSON.stringify(data))).then(
+			str => window.localStorage.setItem('stats.json', str)
+		).catch(ex => console.error(ex)).then( // I don't care a whole lot if this fails.
+			() => this.setState({
+				loading: false,
+				error: false,
+				data,
+				cached: false}
+			));
 	}
 	
 	render() {

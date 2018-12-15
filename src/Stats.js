@@ -4,6 +4,7 @@ import Axios from 'axios';
 import StatsTable from './StatsTable';
 import StatsChart from './StatsChart';
 import COLOURS from './colours';
+import Data from './Data';
 
 class Stats extends Component {
 	constructor(props) {
@@ -99,14 +100,16 @@ class Stats extends Component {
 		if (error) {
 			return <p style={{ color: 'red' }}>{ error.message }</p>;
 		}
+
+		const dataProcessor = new Data(data);
 		
 		return ([
 			<StatsTable
-				data={data}
+				data={dataProcessor}
 				colours={COLOURS}
 			/>,
 			<StatsChart
-				data={data}
+				data={dataProcessor}
 				colours={COLOURS}
 			/>,
 		]);

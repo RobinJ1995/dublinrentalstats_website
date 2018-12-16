@@ -37,10 +37,7 @@ const renderMonthPriceCells = (data, what, where, colour, tiny = false) => ([
 			...(tiny && { fontSize: '0.8em' })
 		}}
 	>
-		{data.getLowest(what, where) >= 100
-		? <span>€{formatNumber(data.getLowest(what, where))}</span>
-		: <span style={{ opacity: 0.2 }} title="Unrepresentative value">€{formatNumber(data.getLowest(what, where))}</span> }<br />
-		€{formatNumber(data.getHighest(what, where))}
+		€{formatNumber(data.getMedian(what, where))}<br />
 	</td>,
 	<td
 		style={{
@@ -48,7 +45,7 @@ const renderMonthPriceCells = (data, what, where, colour, tiny = false) => ([
 			...(tiny && { fontSize: '0.8em' })
 		}}
 	>
-		€{formatNumber(data.getMedian(what, where))}<br />
+		
 		€{formatNumber(data.getAverage(what, where))}
 	</td>
 ])
@@ -74,14 +71,14 @@ const renderLarge = (data, colours) => (
 			</tr>
 			<tr>
 				{[
-					fancyTH(['Lowest/', <br />, 'Highest'], colours.rent.city),
-					fancyTH(['Median/', <br />, 'Average'], colours.rent.city),
-					fancyTH(['Lowest/', <br />, 'Highest'], colours.rent.county),
-					fancyTH(['Median/', <br />, 'Average'], colours.rent.county),
-					fancyTH(['Lowest/', <br />, 'Highest'], colours.sharing.city),
-					fancyTH(['Median/', <br />, 'Average'], colours.sharing.city),
-					fancyTH(['Lowest/', <br />, 'Highest'], colours.sharing.county),
-					fancyTH(['Median/', <br />, 'Average'], colours.sharing.county),
+					fancyTH('Median', colours.rent.city),
+					fancyTH('Average', colours.rent.city),
+					fancyTH('Median', colours.rent.county),
+					fancyTH('Average', colours.rent.county),
+					fancyTH('Median', colours.sharing.city),
+					fancyTH('Average', colours.sharing.city),
+					fancyTH('Median', colours.sharing.county),
+					fancyTH('Average', colours.sharing.county),
 				]}
 			</tr>
 		</thead>
@@ -129,10 +126,10 @@ const renderSmall = (data, colours, tiny = false) => ([
 			</tr>
 			<tr>
 				{[
-					fancyTH(['Lowest/', <br />, 'Highest'], colours.rent.city),
-					fancyTH(['Median/', <br />, 'Average'], colours.rent.city),
-					fancyTH(['Lowest/', <br />, 'Highest'], colours.rent.county),
-					fancyTH(['Median/', <br />, 'Average'], colours.rent.county),
+					fancyTH('Median', colours.rent.city),
+					fancyTH('Average', colours.rent.city),
+					fancyTH('Median', colours.rent.county),
+					fancyTH('Average', colours.rent.county),
 				]}
 			</tr>
 		</thead>
@@ -214,8 +211,8 @@ class StatsTable extends Component {
 	onResize = () => this.setState({
 		screenSize: [
 			['tiny', 0],
-			['small', 420],
-			['large', 780]
+			['small', 480],
+			['large', 800]
 		].reduce((res, x) => window.innerWidth > x[1] ? x[0] : res, null),
 	})
 

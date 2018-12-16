@@ -5,6 +5,37 @@ import { shorten } from './months';
 
 const formatNumber = number => parseFloat(number).toFixed(2);
 const formatDate = (date, tiny = false) => tiny ? `${date.getDate()}/${date.getMonth() + 1}` : `${date.getDate()} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()]} ${date.getFullYear()}`;
+const formatPercentage = percentage => {
+	const rounded = Math.round(percentage * 100) / 100;
+
+	const styles = {
+		color: 'grey',
+		fontSize: '0.94em'
+	};
+
+	if (percentage > 0) {
+		if (percentage >= 0.1) {
+			styles.color = 'red';
+		}
+		if (percentage >= 10) {
+			styles.fontWeight = 'bold';
+		}
+
+		return (<span style={styles}>+{rounded}%</span>);
+	}
+
+	if (percentage <= 0) {
+		if (percentage <= -0.1) {
+			styles.color = 'green';
+		}
+		if (percentage <= -10) {
+			styles.fontWeight = 'bold';
+		}
+
+		return (<span style={styles}>{rounded}%</span>);
+	}
+}
+const difference = (from, to) => (to / from - 1.0) * 100;
 
 const fancyTH = (text, colour, colspan = 1) => <th colspan={colspan} style={{ backgroundColor: colour, textShadow: '0px 0px 5px #282828' }}>{text}</th>;
 const renderPriceCells = (data, colour, tiny = false) => ([
@@ -30,7 +61,7 @@ const renderPriceCells = (data, colour, tiny = false) => ([
 		{data.average && `€${formatNumber(data.average)}`}
 	</td>
 ]);
-const renderMonthPriceCells = (data, what, where, colour, tiny = false) => ([
+const renderMonthPriceCells = (data, what, where, colour, previous, tiny = false) => ([
 	<td
 		style={{
 			backgroundColor: setColourOpacity(colour, 0.1),
@@ -38,6 +69,10 @@ const renderMonthPriceCells = (data, what, where, colour, tiny = false) => ([
 		}}
 	>
 		€{formatNumber(data.getMedian(what, where))}<br />
+
+		{previous.hasData() && (
+			<span>{formatPercentage(difference(previous.getMedian(what, where), data.getMedian(what, where)))}</span>
+		)}
 	</td>,
 	<td
 		style={{
@@ -45,8 +80,11 @@ const renderMonthPriceCells = (data, what, where, colour, tiny = false) => ([
 			...(tiny && { fontSize: '0.8em' })
 		}}
 	>
-		
-		€{formatNumber(data.getAverage(what, where))}
+		€{formatNumber(data.getAverage(what, where))}<br />
+
+		{previous.hasData() && (
+			<span>{formatPercentage(difference(previous.getAverage(what, where), data.getAverage(what, where)))}</span>
+		)}
 	</td>
 ])
 
@@ -86,13 +124,13 @@ const renderLarge = (data, colours) => (
 			backgroundColor: '#DFDFDF',
 			color: 'black',
 		}}>
-			{data.getMonths().map(month => [month, data.getMonth(month)]).map(([month, data]) =>
+			{data.getMonths().map((month, i, months) => [month, data.getMonth(month), data.getMonth(months[i - 1])]).map(([month, data, previous]) => 
 				<tr>
 					<th>{month}</th>
-					{renderMonthPriceCells(data, Data.RENT, Data.CITY, colours.rent.city)}
-					{renderMonthPriceCells(data, Data.RENT, Data.COUNTY, colours.rent.county)}
-					{renderMonthPriceCells(data, Data.SHARING, Data.CITY, colours.sharing.city)}
-					{renderMonthPriceCells(data, Data.SHARING, Data.COUNTY, colours.sharing.county)}
+					{renderMonthPriceCells(data, Data.RENT, Data.CITY, colours.rent.city, previous)}
+					{renderMonthPriceCells(data, Data.RENT, Data.COUNTY, colours.rent.county, previous)}
+					{renderMonthPriceCells(data, Data.SHARING, Data.CITY, colours.sharing.city, previous)}
+					{renderMonthPriceCells(data, Data.SHARING, Data.COUNTY, colours.sharing.county, previous)}
 				</tr>
 			)}
 			
@@ -137,14 +175,14 @@ const renderSmall = (data, colours, tiny = false) => ([
 			backgroundColor: '#DFDFDF',
 			color: 'black',
 		}}>
-			{data.getMonths().map(month => [month, data.getMonth(month)]).map(([month, data]) => (
+			{data.getMonths().map((month, i, months) => [month, data.getMonth(month), data.getMonth(months[i - 1])]).map(([month, data, previous]) => (
 				<tr>
 					{ tiny
 					? <th style={{...(tiny && { fontSize: '0.8em' })}}>{shorten(month)}</th>
 					: <th>{month}</th> }
 					
-					{renderMonthPriceCells(data, Data.RENT, Data.CITY, colours.rent.city, tiny)}
-					{renderMonthPriceCells(data, Data.RENT, Data.COUNTY, colours.rent.county, tiny)}
+					{renderMonthPriceCells(data, Data.RENT, Data.CITY, colours.rent.city, previous, tiny)}
+					{renderMonthPriceCells(data, Data.RENT, Data.COUNTY, colours.rent.county, previous, tiny)}
 				</tr>
 			))}
 		</tbody>
@@ -166,10 +204,10 @@ const renderSmall = (data, colours, tiny = false) => ([
 			</tr>
 			<tr>
 				{[
-					fancyTH(['Lowest/', <br />, 'Highest'], colours.sharing.city),
-					fancyTH(['Median/', <br />, 'Average'], colours.sharing.city),
-					fancyTH(['Lowest/', <br />, 'Highest'], colours.sharing.county),
-					fancyTH(['Median/', <br />, 'Average'], colours.sharing.county),
+					fancyTH('Median', colours.sharing.city),
+					fancyTH('Average', colours.sharing.city),
+					fancyTH('Median', colours.sharing.county),
+					fancyTH('Average', colours.sharing.county),
 				]}
 			</tr>
 		</thead>
@@ -177,13 +215,13 @@ const renderSmall = (data, colours, tiny = false) => ([
 			backgroundColor: '#DFDFDF',
 			color: 'black',
 		}}>
-			{data.getMonths().map(month => [month, data.getMonth(month)]).map(([month, data]) => (
+			{data.getMonths().map((month, i, months) => [month, data.getMonth(month), data.getMonth(months[i - 1])]).map(([month, data, previous]) => (
 				<tr>
 					{ tiny
 					? <th style={{...(tiny && { fontSize: '0.8em' })}}>{shorten(month)}</th>
 					: <th>{month}</th> }
-					{renderMonthPriceCells(data, Data.SHARING, Data.CITY, colours.sharing.city, tiny)}
-					{renderMonthPriceCells(data, Data.SHARING, Data.COUNTY, colours.sharing.county, tiny)}
+					{renderMonthPriceCells(data, Data.SHARING, Data.CITY, colours.sharing.city, previous, tiny)}
+					{renderMonthPriceCells(data, Data.SHARING, Data.COUNTY, colours.sharing.county, previous, tiny)}
 				</tr>
 			))}
 		</tbody>

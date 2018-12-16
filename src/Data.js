@@ -89,10 +89,10 @@ export default class Data {
 
     getDay = date => new DayData(this.data[date]);
 
-    getMonths = () => [...new Set(Object.keys(this.data).map(dateStr => {
+    getMonths = (excludeFebruary2018 = true) => [...new Set(Object.keys(this.data).map(dateStr => {
         const date = new Date(dateStr);
         return months[date.getMonth()] + ' ' + date.getFullYear();
-    }))];
+    }).filter(month => !(excludeFebruary2018 && month === 'February 2018')))]; // Not enough data for this month for February 2018 for it to be representative
 
     getMonth = month => new MonthData(this.data, month);
 }

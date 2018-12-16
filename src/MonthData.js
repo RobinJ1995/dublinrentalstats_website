@@ -2,8 +2,11 @@ import months from './months';
 
 export default class DayData {
     constructor(data, month) {
+        this.month = month;
+
         this.data = Object.keys(data).filter(dateStr => {
             const date = new Date(dateStr);
+
             return month === months[date.getMonth()] + ' ' + date.getFullYear();
         }).map(date => data[date]);
     }
@@ -23,4 +26,8 @@ export default class DayData {
     getMedian = (what, where) => Object.values(this.data).map(data => data[what][where].median)
         .filter(val => val !== undefined)
         .reduce((prev, cur) => prev + cur, 0) / Object.keys(this.data).length;
+    
+    getMonth = () => this.month;
+
+    hasData = () => this.data.length > 0;
 }

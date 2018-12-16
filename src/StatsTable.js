@@ -2,40 +2,10 @@ import React, { Component } from 'react';
 import { setColourOpacity } from './colours';
 import Data from './Data';
 import { shorten } from './months';
+import difference, { formatPercentage } from './difference';
 
 const formatNumber = number => parseFloat(number).toFixed(2);
 const formatDate = (date, tiny = false) => tiny ? `${date.getDate()}/${date.getMonth() + 1}` : `${date.getDate()} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()]} ${date.getFullYear()}`;
-const formatPercentage = percentage => {
-	const rounded = Math.round(percentage * 100) / 100;
-
-	const styles = {
-		color: 'grey',
-		fontSize: '0.94em'
-	};
-
-	if (percentage > 0) {
-		if (percentage >= 0.1) {
-			styles.color = 'red';
-		}
-		if (percentage >= 10) {
-			styles.fontWeight = 'bold';
-		}
-
-		return (<span style={styles}>+{rounded}%</span>);
-	}
-
-	if (percentage <= 0) {
-		if (percentage <= -0.1) {
-			styles.color = 'green';
-		}
-		if (percentage <= -10) {
-			styles.fontWeight = 'bold';
-		}
-
-		return (<span style={styles}>{rounded}%</span>);
-	}
-}
-const difference = (from, to) => (to / from - 1.0) * 100;
 
 const fancyTH = (text, colour, colspan = 1) => <th colspan={colspan} style={{ backgroundColor: colour, textShadow: '0px 0px 5px #282828' }}>{text}</th>;
 const renderPriceCells = (data, colour, tiny = false) => ([

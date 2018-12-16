@@ -5,6 +5,7 @@ import StatsTable from './StatsTable';
 import StatsChart from './StatsChart';
 import COLOURS from './colours';
 import Data from './Data';
+import StatsEnglish from './StatsEnglish';
 
 class Stats extends Component {
 	constructor(props) {
@@ -104,6 +105,10 @@ class Stats extends Component {
 		const dataProcessor = new Data(data);
 		
 		return ([
+			<StatsEnglish
+				data={dataProcessor}
+				colours={COLOURS}
+			/>,
 			<StatsTable
 				data={dataProcessor}
 				colours={COLOURS}

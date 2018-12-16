@@ -5,16 +5,16 @@
 
 .App-header {
   background-color: #002B36;
-  height: 100px;
-  padding: 20px;
+  padding: 8px;
+  padding-bottom: 2px;
   color: white;
 }
 
 .App-header h1 {
-  font-size: 1.5em;
+  font-size: 1.4em;
 }
 .App-header h2 {
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: normal;
 }
 
@@ -22,3 +22,13 @@
   font-size: large;
 }
 
+.statsEnglish {
+  background: #003A49 linear-gradient(#002B36, #003A49);
+  color: white;
+  padding: 0.2em;
+  padding-bottom: 0.8em;
+}
+
+.statsEnglish p {
+  margin: 0.2em;
+}

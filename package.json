@@ -4,8 +4,8 @@
   "author": "Robin Jacobs",
   "license": "GPLv3",
   "dependencies": {
-    "axios": "^0.18.0",
-    "highcharts": "^6.0.7",
+    "axios": "^0.18.1",
+    "highcharts": "^6.2.0",
     "highcharts-more": "^0.1.7",
     "parse-color": "^1.0.0",
     "react": "^16.2.0",

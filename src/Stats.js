@@ -24,7 +24,7 @@ class Stats extends Component {
 			loading: true,
 		});
 		
-		this.fetchCachedData();
+		// this.fetchCachedData();
 		
 		return this.fetchData().catch(
 			error => {
@@ -66,7 +66,7 @@ class Stats extends Component {
 	
 	onDataLoaded(data) {
 		new Promise(resolve => resolve(JSON.stringify(data))).then(
-			str => window.localStorage.setItem('stats.json', str)
+			str => str //window.localStorage.setItem('stats.json', str)
 		).catch(ex => console.error(ex)).then( // I don't care a whole lot if this fails.
 			() => this.setState({
 				loading: false,

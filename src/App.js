@@ -13,7 +13,7 @@ class App extends Component {
 				</header>
 				<div>
 					<Stats
-						source="https://dublinrentalstats.fra1.digitaloceanspaces.com/stats.json"
+						source="https://data.dublinrentalstats.eu/stats.json"
 					/>
 				</div>
 				<footer>

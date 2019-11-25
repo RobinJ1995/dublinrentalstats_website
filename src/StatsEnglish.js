@@ -15,7 +15,6 @@ class StatsEnglish extends Component {
 	render() {
 		const {
 			data,
-			colours,
         } = this.props;
         
         const monthData = data.getMonths()
@@ -34,8 +33,7 @@ class StatsEnglish extends Component {
                     .reduce((acc, cur) => acc + cur, 0);
                 
 
-                return <p>{english[what]} prices for {english[where]} have gone {percentage >= 0 ? 'up' : 'down'} by {formatPercentage(percentage, false)} in the last {nMonths} months. That's an average of {formatPercentage(percentage / nMonths, true, 0, 0.5)} per month.</p>
-
+                return <p key={`${what}-${where}`}>{english[what]} prices for {english[where]} have gone {percentage >= 0 ? 'up' : 'down'} by {formatPercentage(percentage, false)} in the last {nMonths} months. That's an average of {formatPercentage(percentage / nMonths, true, 0, 0.5)} per month.</p>
             })}
         </div>
 	}

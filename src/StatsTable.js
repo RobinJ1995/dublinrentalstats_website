@@ -7,7 +7,7 @@ import difference, { formatPercentage } from './difference';
 const formatNumber = number => parseFloat(number).toFixed(2);
 const formatDate = (date, tiny = false) => tiny ? `${date.getDate()}/${date.getMonth() + 1}` : `${date.getDate()} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()]} ${date.getFullYear()}`;
 
-const fancyTH = (text, colour, colspan = 1) => <th colspan={colspan} style={{ backgroundColor: colour, textShadow: '0px 0px 5px #282828' }}>{text}</th>;
+const fancyTH = (text, colour, colSpan = 1) => <th key={`${text}-${colour}`} colSpan={colSpan} style={{ backgroundColor: colour, textShadow: '0px 0px 5px #282828' }}>{text}</th>;
 const renderPriceCells = (data, colour, tiny = false) => ([
 	<td
 		style={{
@@ -65,9 +65,9 @@ const renderLarge = (data, colours) => (
 			color: 'white',
 		}}>
 			<tr>
-				<th rowspan="3">Date</th>
-				<th colspan="4">Renting</th>
-				<th colspan="4">Sharing</th>
+				<th rowSpan="3">Date</th>
+				<th colSpan="4">Renting</th>
+				<th colSpan="4">Sharing</th>
 			</tr>
 			<tr>
 				{[
@@ -123,8 +123,8 @@ const renderSmall = (data, colours, tiny = false) => ([
 			color: 'white',
 		}}>
 			<tr>
-				<th rowspan="3">Date</th>
-				<th colspan="4">Renting</th>
+				<th rowSpan="3">Date</th>
+				<th colSpan="4">Renting</th>
 			</tr>
 			<tr>
 				{[
@@ -163,8 +163,8 @@ const renderSmall = (data, colours, tiny = false) => ([
 			color: 'white',
 		}}>
 			<tr>
-				<th rowspan="3">Date</th>
-				<th colspan="4">Sharing</th>
+				<th rowSpan="3">Date</th>
+				<th colSpan="4">Sharing</th>
 			</tr>
 			<tr>
 				{[

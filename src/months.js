@@ -1,5 +1,3 @@
-import parseColour from 'parse-color';
-
 const long = [
 	'January',
 	'February',

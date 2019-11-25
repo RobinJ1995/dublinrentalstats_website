@@ -65,8 +65,9 @@ class Stats extends Component {
 	}
 	
 	onDataLoaded(data) {
+		/*
 		new Promise(resolve => resolve(JSON.stringify(data))).then(
-			str => str //window.localStorage.setItem('stats.json', str)
+			str => window.localStorage.setItem('stats.json', str)
 		).catch(ex => console.error(ex)).then( // I don't care a whole lot if this fails.
 			() => this.setState({
 				loading: false,
@@ -74,6 +75,13 @@ class Stats extends Component {
 				data,
 				cached: false}
 			));
+		*/
+		this.setState({
+			loading: false,
+			error: false,
+			data,
+			cached: false
+		});
 	}
 	
 	render() {
@@ -107,7 +115,6 @@ class Stats extends Component {
 		return ([
 			<StatsEnglish
 				data={dataProcessor}
-				colours={COLOURS}
 			/>,
 			<StatsTable
 				data={dataProcessor}

@@ -116,11 +116,11 @@ class Stats extends Component {
 			<StatsEnglish
 				data={dataProcessor}
 			/>,
-			<StatsTable
+			<StatsChart
 				data={dataProcessor}
 				colours={COLOURS}
 			/>,
-			<StatsChart
+			<StatsTable
 				data={dataProcessor}
 				colours={COLOURS}
 			/>,

@@ -36,9 +36,17 @@ const getConfig = (data, colours) => ({
 	plotOptions: {
 		series: {
 			label: {
-				connectorAllowed: false
+				connectorAllowed: false,
 			},
 		}
+	},
+
+	tooltip: {
+		formatter: function(x) {
+			const rounded = parseFloat(this.y).toFixed(2);
+
+			return `€${rounded}`;
+		},
 	},
 
 	series: [

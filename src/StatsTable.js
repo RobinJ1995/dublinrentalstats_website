@@ -102,17 +102,7 @@ const renderLarge = (data, colours) => (
 					{renderMonthPriceCells(data, Data.SHARING, Data.CITY, colours.sharing.city, previous)}
 					{renderMonthPriceCells(data, Data.SHARING, Data.COUNTY, colours.sharing.county, previous)}
 				</tr>
-			)}
-			
-			{/* {data.getDates().map(date => (
-				<tr>
-					<th title={new Date(date).toDateString()}>{formatDate(new Date(date))}</th>
-					{renderPriceCells(data.getDay(date).get(Data.RENT, Data.CITY), colours.rent.city)}
-					{renderPriceCells(data.getDay(date).get(Data.RENT, Data.COUNTY), colours.rent.county)}
-					{renderPriceCells(data.getDay(date).get(Data.SHARING, Data.CITY), colours.sharing.city)}
-					{renderPriceCells(data.getDay(date).get(Data.SHARING, Data.COUNTY), colours.sharing.county)}
-				</tr>
-			))} */}
+			).reverse()}
 		</tbody>
 	</table>
 );
@@ -193,7 +183,7 @@ const renderSmall = (data, colours, tiny = false) => ([
 					{renderMonthPriceCells(data, Data.SHARING, Data.CITY, colours.sharing.city, previous, tiny)}
 					{renderMonthPriceCells(data, Data.SHARING, Data.COUNTY, colours.sharing.county, previous, tiny)}
 				</tr>
-			))}
+			)).reverse()}
 		</tbody>
 	</table>
 ]);
